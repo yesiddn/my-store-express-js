@@ -1,7 +1,28 @@
 // Example: Hello, my server in express! (https://expressjs.com/en/starter/hello-world.html)
 const express = require('express');
+const { faker } = require('@faker-js/faker');
+
 const app = express();
 const port = 3000;
+
+// products array
+function getProducts(size = 100) {
+  const products = [];
+  const limit = size;
+
+  for (let i = 0; i < limit; i++) {
+    products.push({
+      id: i + 1,
+      name: faker.commerce.productName(),
+      price: parseInt(faker.commerce.price(), 10),
+      image: faker.image.url(),
+    });
+  }
+
+  return products;
+}
+
+// ---
 
 app.get('/', (req, res) => {
   res.send('Hello, my server in express!');
@@ -12,20 +33,17 @@ app.get('/new-endpoint', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Product 1',
-      price: 1000,
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      price: 2000,
-    },
-  ]);
+  const { size } = req.query;
+  const products = getProducts(size);
+  res.json(products);
 });
 
+// endpoint estatico o especifico deben ir primero que los dinamicos
+app.get('/products/filter', (req, res) => {
+  res.send('Soy un filter');
+});
+
+// endpoint dinamico
 app.get('/products/:id', (req, res) => {
   /* const params = req.params;
   {
@@ -34,8 +52,8 @@ app.get('/products/:id', (req, res) => {
     }
   }
   */
-
   // const id = req.params.id;
+  
   const { id } = req.params; // forma destructurada
   res.json({
     id,
@@ -47,13 +65,13 @@ app.get('/products/:id', (req, res) => {
 app.get('/categories', (req, res) => {
   res.json([
     {
-    id: 1,
-    name: 'Category 1',
+      id: 1,
+      name: 'Category 1',
     },
     {
       id: 2,
       name: 'Category 2',
-    }
+    },
   ]);
 });
 
@@ -65,20 +83,33 @@ app.get('/categories/:id', (req, res) => {
   });
 });
 
-app.get('/people', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Person 1',
-    },
-    {
-      id: 2,
-      name: 'Person 2',
-    },
-  ]);
+app.get('/users', (req, res) => {
+  const { limit, offset } = req.query;
+
+  if (limit && offset) {
+    res.json([
+      {
+        id: 1,
+        name: 'Person 1',
+        limit,
+        offset,
+      },
+    ]);
+  } else {
+    res.json([
+      {
+        id: 1,
+        name: 'Person 1',
+      },
+      {
+        id: 2,
+        name: 'Person 2',
+      },
+    ]);
+  }
 });
 
-app.get('/people/:id', (req, res) => {
+app.get('/users/:id', (req, res) => {
   const { id } = req.params;
   res.json({
     id,
