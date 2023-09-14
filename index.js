@@ -1,26 +1,9 @@
 // Example: Hello, my server in express! (https://expressjs.com/en/starter/hello-world.html)
 const express = require('express');
-const { faker } = require('@faker-js/faker');
+const router = require('./routes');
 
 const app = express();
 const port = 3000;
-
-// products array
-function getProducts(size = 100) {
-  const products = [];
-  const limit = size;
-
-  for (let i = 0; i < limit; i++) {
-    products.push({
-      id: i + 1,
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price(), 10),
-      image: faker.image.url(),
-    });
-  }
-
-  return products;
-}
 
 // ---
 
@@ -32,90 +15,92 @@ app.get('/new-endpoint', (req, res) => {
   res.send('Hello, this is a new endpoint!');
 });
 
-app.get('/products', (req, res) => {
-  const { size } = req.query;
-  const products = getProducts(size);
-  res.json(products);
-});
+router(app);
 
-// endpoint estatico o especifico deben ir primero que los dinamicos
-app.get('/products/filter', (req, res) => {
-  res.send('Soy un filter');
-});
+// app.get('/products', (req, res) => {
+//   const { size } = req.query;
+//   const products = getProducts(size);
+//   res.json(products);
+// });
 
-// endpoint dinamico
-app.get('/products/:id', (req, res) => {
-  /* const params = req.params;
-  {
-    params: {
-      id: 1
-    }
-  }
-  */
-  // const id = req.params.id;
-  
-  const { id } = req.params; // forma destructurada
-  res.json({
-    id,
-    name: 'Product 2',
-    price: 2000,
-  });
-}); // :id es un parametro
+// // endpoint estatico o especifico deben ir primero que los dinamicos
+// app.get('/products/filter', (req, res) => {
+//   res.send('Soy un filter');
+// });
 
-app.get('/categories', (req, res) => {
-  res.json([
-    {
-      id: 1,
-      name: 'Category 1',
-    },
-    {
-      id: 2,
-      name: 'Category 2',
-    },
-  ]);
-});
+// // endpoint dinamico
+// app.get('/products/:id', (req, res) => {
+//   /* const params = req.params;
+//   {
+//     params: {
+//       id: 1
+//     }
+//   }
+//   */
+//   // const id = req.params.id;
 
-app.get('/categories/:id', (req, res) => {
-  const { id } = req.params;
-  res.json({
-    id,
-    name: 'Category 1',
-  });
-});
+//   const { id } = req.params; // forma destructurada
+//   res.json({
+//     id,
+//     name: 'Product 2',
+//     price: 2000,
+//   });
+// }); // :id es un parametro
 
-app.get('/users', (req, res) => {
-  const { limit, offset } = req.query;
+// app.get('/categories', (req, res) => {
+//   res.json([
+//     {
+//       id: 1,
+//       name: 'Category 1',
+//     },
+//     {
+//       id: 2,
+//       name: 'Category 2',
+//     },
+//   ]);
+// });
 
-  if (limit && offset) {
-    res.json([
-      {
-        id: 1,
-        name: 'Person 1',
-        limit,
-        offset,
-      },
-    ]);
-  } else {
-    res.json([
-      {
-        id: 1,
-        name: 'Person 1',
-      },
-      {
-        id: 2,
-        name: 'Person 2',
-      },
-    ]);
-  }
-});
+// app.get('/categories/:id', (req, res) => {
+//   const { id } = req.params;
+//   res.json({
+//     id,
+//     name: 'Category 1',
+//   });
+// });
 
-app.get('/users/:id', (req, res) => {
-  const { id } = req.params;
-  res.json({
-    id,
-    name: 'Person 1',
-  });
-});
+// app.get('/users', (req, res) => {
+//   const { limit, offset } = req.query;
+
+//   if (limit && offset) {
+//     res.json([
+//       {
+//         id: 1,
+//         name: 'Person 1',
+//         limit,
+//         offset,
+//       },
+//     ]);
+//   } else {
+//     res.json([
+//       {
+//         id: 1,
+//         name: 'Person 1',
+//       },
+//       {
+//         id: 2,
+//         name: 'Person 2',
+//       },
+//     ]);
+//   }
+// });
+
+// app.get('/users/:id', (req, res) => {
+//   const { id } = req.params;
+//   res.json({
+//     id,
+//     name: 'Person 1',
+//   });
+// });
 
 // app.get('/categories/:categoryId/products/:productId', (req, res) => {
 //   const { categoryId, productId } = req.params;
