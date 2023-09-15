@@ -51,4 +51,12 @@ router.get('/:id', (req, res) => {
   });
 }); // :id es un parametro
 
+router.post('/', (req, res) => {
+  const body = req.body;
+  res.json({
+    message: 'Created',
+    data: body
+  });
+});
+
 module.exports = router;

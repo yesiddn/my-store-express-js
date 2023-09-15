@@ -5,6 +5,8 @@ const router = require('./routes');
 const app = express();
 const port = 3000;
 
+app.use(express.json()); // middleware para que express entienda el formato json en las peticiones
+
 // ---
 
 app.get('/', (req, res) => {
