@@ -20,7 +20,7 @@ function getProducts(size = 100) {
   return products;
 }
 
-// app.get('/products', (req, res) => { //> parar separar responsabilidades, el router no se manejaria con '/products' sino con '/' dejando solo la especificidad
+// app.get('/products', (req, res) => { //> para separar responsabilidades, el router no se manejaria con '/products' sino con '/' dejando solo la especificidad
 router.get('/', (req, res) => {
   const { size } = req.query;
   const products = getProducts(size);
@@ -53,9 +53,30 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   const body = req.body;
+
   res.json({
     message: 'Created',
-    data: body
+    data: body,
+  });
+});
+
+router.patch('/:id', (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+
+  res.json({
+    message: 'Updated',
+    data: body,
+    id,
+  });
+});
+
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  res.json({
+    message: 'Deleted',
+    id
   });
 });
 
