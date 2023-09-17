@@ -17,16 +17,23 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  res.json({
-    id,
-    name: 'Category 1',
-  });
+
+  if (id === '999') {
+    res.status(404).json({
+      message: 'Not found',
+    });
+  } else {
+    res.json({
+      id,
+      name: 'Category 1',
+    });
+  }
 });
 
 router.post('/', (req, res) => {
   const body = req.body;
 
-  res.json({
+  res.status(201).json({
     message: 'Created',
     data: body,
   });
