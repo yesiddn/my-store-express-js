@@ -37,7 +37,20 @@ class CategoriesService {
     return this.categories.find((item) => item.id === id);
   }
 
-  update() {}
+  update(id, { name, image }) {
+    const index = this.categories.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+      throw new Error('Not found');
+    }
+
+    this.categories[index] = {
+      id,
+      name,
+      image,
+    };
+    return this.categories[index];
+  }
 
   delete() {}
 }

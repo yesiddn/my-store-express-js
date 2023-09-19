@@ -38,7 +38,21 @@ class ProductsService {
     return this.products.find((item) => item.id === id);
   }
 
-  update() {}
+  update(id, { name, price, image }) {
+    const index = this.products.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+      throw new Error('Not found');
+    }
+
+    this.products[index] = {
+      id,
+      name,
+      price,
+      image,
+    };
+    return this.products[index];
+  }
 
   delete() {}
 }

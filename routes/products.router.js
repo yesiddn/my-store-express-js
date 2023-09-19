@@ -78,6 +78,20 @@ router.post('/', (req, res) => {
   res.status(201).json(newProduct);
 });
 
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+
+  const product = service.update(id, body);
+
+  // res.json({
+  //   message: 'Updated',
+  //   data: body,
+  //   id,
+  // });
+  res.json(product);
+});
+
 router.patch('/:id', (req, res) => {
   const { id } = req.params;
   const body = req.body;

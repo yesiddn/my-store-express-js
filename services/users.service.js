@@ -37,7 +37,20 @@ class UsersService {
     return this.users.find((item) => item.id === id);
   }
 
-  update() {}
+  update(id, { name, job }) {
+    const index = this.users.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+      throw new Error('Not found');
+    }
+
+    this.users[index] = {
+      id,
+      name,
+      job,
+    };
+    return this.users[index];
+  }
 
   delete() {}
 }
