@@ -23,21 +23,21 @@ const service = new ProductsService();
 // }
 
 // app.get('/products', (req, res) => { //> para separar responsabilidades, el router no se manejaria con '/products' sino con '/' dejando solo la especificidad
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // Los query params son opcionales, se pueden eviar asi: /products?size=10
   // const { size } = req.query;
   // const products = getProducts(size);
-  const products = service.find();
+  const products = await service.find();
   res.json(products);
 });
 
 // endpoint estatico o especifico deben ir primero que los dinamicos
-router.get('/filter', (req, res) => {
+router.get('/filter', async (req, res) => {
   res.send('Soy un filter');
 });
 
 // endpoint dinamico
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   /* const params = req.params;
   {
     params: {
@@ -61,15 +61,15 @@ router.get('/:id', (req, res) => {
   //   });
   // }
 
-  const product = service.findOne(id);
+  const product = await service.findOne(id);
   res.json(product);
 
 }); // :id es un parametro
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const body = req.body;
 
-  const newProduct = service.create(body);
+  const newProduct = await service.create(body);
   
   // res.status(201).json({
   //   message: 'Created',
@@ -78,11 +78,11 @@ router.post('/', (req, res) => {
   res.status(201).json(newProduct);
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const body = req.body;
 
-  const product = service.update(id, body);
+  const product = await service.update(id, body);
 
   // res.json({
   //   message: 'Updated',
@@ -92,7 +92,7 @@ router.put('/:id', (req, res) => {
   res.json(product);
 });
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
   const { id } = req.params;
   const body = req.body;
 
@@ -103,10 +103,10 @@ router.patch('/:id', (req, res) => {
   });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const response = service.delete(id);
+  const response = await service.delete(id);
 
   // res.json({
   //   message: 'Deleted',

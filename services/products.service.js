@@ -20,7 +20,7 @@ class ProductsService {
     }
   }
 
-  create(data) {
+  async create(data) {
     const newProduct = {
       id: faker.string.uuid(),
       ...data,
@@ -30,16 +30,23 @@ class ProductsService {
     return newProduct;
   }
 
-  find() {
-    return this.products;
+  async find() {
+    // return this.products;
+
+    // emulacion de demora
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.products);
+      }, 5000);
+    });
   }
 
-  findOne(id) {
+  async findOne(id) {
     return this.products.find((item) => item.id === id);
   }
 
-  update(id, { name, price, image }) {
-  // update(id, data) {
+  async update(id, { name, price, image }) {
+    // update(id, data) {
     const index = this.products.findIndex((item) => item.id === id);
 
     if (index === -1) {
@@ -52,7 +59,7 @@ class ProductsService {
       price,
       image,
     };
-    
+
     // patch method
     // const product = this.products[index];
     // this.products[index] = {...product, ...data}
@@ -60,7 +67,7 @@ class ProductsService {
     return this.products[index];
   }
 
-  delete(id) {
+  async delete(id) {
     const index = this.products.findIndex((item) => item.id === id);
 
     if (index === -1) {
