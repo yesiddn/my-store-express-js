@@ -39,6 +39,7 @@ class ProductsService {
   }
 
   update(id, { name, price, image }) {
+  // update(id, data) {
     const index = this.products.findIndex((item) => item.id === id);
 
     if (index === -1) {
@@ -51,10 +52,24 @@ class ProductsService {
       price,
       image,
     };
+    
+    // patch method
+    // const product = this.products[index];
+    // this.products[index] = {...product, ...data}
+
     return this.products[index];
   }
 
-  delete() {}
+  delete(id) {
+    const index = this.products.findIndex((item) => item.id === id);
+
+    if (index === -1) {
+      throw new Error('Not found');
+    }
+
+    this.products.splice(index, 1);
+    return { id, message: 'Deleted' };
+  }
 }
 
 module.exports = ProductsService;

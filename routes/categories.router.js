@@ -77,10 +77,13 @@ router.patch('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
 
-  res.json({
-    message: 'Deleted',
-    id,
-  });
+  const response = service.delete(id);
+  
+  // res.json({
+  //   message: 'Deleted',
+  //   id,
+  // });
+  res.status(204).json(response);
 });
 
 module.exports = router;
