@@ -1,6 +1,7 @@
 const express = require('express');
 // const { faker } = require('@faker-js/faker');
 const ProductsService = require('../services/products.service');
+const { tr } = require('@faker-js/faker');
 
 const router = express.Router();
 const service = new ProductsService();
@@ -63,14 +64,13 @@ router.get('/:id', async (req, res) => {
 
   const product = await service.findOne(id);
   res.json(product);
-
 }); // :id es un parametro
 
 router.post('/', async (req, res) => {
   const body = req.body;
 
   const newProduct = await service.create(body);
-  
+
   // res.status(201).json({
   //   message: 'Created',
   //   data: body,
@@ -79,17 +79,23 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
+  try {
+    const { id } = req.params;
+    const body = req.body;
 
-  const product = await service.update(id, body);
+    const product = await service.update(id, body);
 
-  // res.json({
-  //   message: 'Updated',
-  //   data: body,
-  //   id,
-  // });
-  res.json(product);
+    // res.json({
+    //   message: 'Updated',
+    //   data: body,
+    //   id,
+    // });
+    res.json(product);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
 });
 
 router.patch('/:id', async (req, res) => {

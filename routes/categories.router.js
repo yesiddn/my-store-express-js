@@ -50,8 +50,9 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
+  try {
+    const { id } = req.params;
+    const body = req.body;
 
   const category = service.update(id, body);
 
@@ -61,6 +62,11 @@ router.put('/:id', (req, res) => {
   //   id,
   // });
   res.json(category);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
 });
 
 router.patch('/:id', (req, res) => {

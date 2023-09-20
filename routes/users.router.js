@@ -64,17 +64,23 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
-
-  const user = service.update(id, body);
-
-  // res.json({
-  //   message: 'Updated',
-  //   data: body,
-  //   id,
-  // });
-  res.json(user);
+  try {
+    const { id } = req.params;
+    const body = req.body;
+  
+    const user = service.update(id, body);
+  
+    // res.json({
+    //   message: 'Updated',
+    //   data: body,
+    //   id,
+    // });
+    res.json(user);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
 });
 
 router.patch('/:id', (req, res) => {
