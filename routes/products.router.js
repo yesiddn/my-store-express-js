@@ -38,7 +38,8 @@ router.get('/filter', async (req, res) => {
 });
 
 // endpoint dinamico
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
+  // el error se debe capturar de forma explicita en el router
   /* const params = req.params;
   {
     params: {
@@ -48,22 +49,26 @@ router.get('/:id', async (req, res) => {
   */
   // const id = req.params.id;
 
-  const { id } = req.params; // forma destructurada
+  try {
+    const { id } = req.params; // forma destructurada
 
-  // if (id === '999') {
-  //   res.status(404).json({
-  //     message: 'Not found',
-  //   });
-  // } else {
-  //   res.status(200).json({
-  //     id,
-  //     name: 'Product 2',
-  //     price: 2000,
-  //   });
-  // }
+    // if (id === '999') {
+    //   res.status(404).json({
+    //     message: 'Not found',
+    //   });
+    // } else {
+    //   res.status(200).json({
+    //     id,
+    //     name: 'Product 2',
+    //     price: 2000,
+    //   });
+    // }
 
-  const product = await service.findOne(id);
-  res.json(product);
+    const product = await service.findOne(id);
+    res.json(product);
+  } catch (error) {
+    next(error); // se agrega el next para atrapar de forma explicita el error con el middleware
+  }
 }); // :id es un parametro
 
 router.post('/', async (req, res) => {

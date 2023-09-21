@@ -42,6 +42,7 @@ class ProductsService {
   }
 
   async findOne(id) {
+    const name = this.getTotal(); // error, prueba de manejo de errores con middleware
     return this.products.find((item) => item.id === id);
   }
 
