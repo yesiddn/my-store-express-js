@@ -14,4 +14,23 @@ function errorHandler(err, req, res, next) {
   });
 }
 
-module.exports = { logErrors, errorHandler };
+// esta funcion nos dara un error: Cannot set headers after they are sent to the client. Esto por no tener un return en el res.status(500).json o un else en el if
+// middleware para manejo de errores con Boom
+// function boomErrorHandler(err, req, res, next) {
+//   if (err.isBoom) {
+//     const { output } = err;
+//     res.status(output.statusCode).json(output.payload);
+//   }
+//   next(err);
+// }
+
+function boomErrorHandler(err, req, res, next) {
+  if (err.isBoom) {
+    const { output } = err;
+    res.status(output.statusCode).json(output.payload);
+  } else {
+    next(err);
+  }
+}
+
+module.exports = { logErrors, errorHandler, boomErrorHandler };

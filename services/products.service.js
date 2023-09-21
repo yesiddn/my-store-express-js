@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
 
 class ProductsService {
   constructor() {
@@ -16,6 +17,7 @@ class ProductsService {
         name: faker.commerce.productName(),
         price: parseInt(faker.commerce.price(), 10),
         image: faker.image.url(),
+        isBlock: faker.datatype.boolean(),
       });
     }
   }
@@ -37,13 +39,23 @@ class ProductsService {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(this.products);
-      }, 5000);
+      }, 2000);
     });
   }
 
   async findOne(id) {
-    const name = this.getTotal(); // error, prueba de manejo de errores con middleware
-    return this.products.find((item) => item.id === id);
+    // const name = this.getTotal(); // error, prueba de manejo de errores con middleware
+    const product = this.products.find((item) => item.id === id);
+
+    if (!product) {
+      throw boom.notFound('Product not found');
+    }
+    // regla o logica de negocio
+    if (product.isBlock) {
+      throw boom.conflict('Product is blocked');
+    }
+
+    return product;
   }
 
   async update(id, { name, price, image }) {
@@ -51,7 +63,8 @@ class ProductsService {
     const index = this.products.findIndex((item) => item.id === id);
 
     if (index === -1) {
-      throw new Error('Not found');
+      // throw new Error('Not found'); // envio de error de forma explicita
+      throw boom.notFound('Product not found'); // envio de error con http status code
     }
 
     this.products[index] = {
@@ -72,7 +85,8 @@ class ProductsService {
     const index = this.products.findIndex((item) => item.id === id);
 
     if (index === -1) {
-      throw new Error('Not found');
+      // throw new Error('Not found');
+      throw boom.notFound('Product not found');
     }
 
     this.products.splice(index, 1);

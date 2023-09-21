@@ -1,7 +1,6 @@
 const express = require('express');
 // const { faker } = require('@faker-js/faker');
 const ProductsService = require('../services/products.service');
-const { tr } = require('@faker-js/faker');
 
 const router = express.Router();
 const service = new ProductsService();
@@ -83,7 +82,7 @@ router.post('/', async (req, res) => {
   res.status(201).json(newProduct);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const body = req.body;
@@ -97,9 +96,10 @@ router.put('/:id', async (req, res) => {
     // });
     res.json(product);
   } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    // res.status(404).json({
+    //   message: error.message,
+    // });
+    next(error);
   }
 });
 
@@ -114,16 +114,20 @@ router.patch('/:id', async (req, res) => {
   });
 });
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  const response = await service.delete(id);
+    const response = await service.delete(id);
 
-  // res.json({
-  //   message: 'Deleted',
-  //   id
-  // });
-  res.status(204).json(response);
+    // res.json({
+    //   message: 'Deleted',
+    //   id
+    // });
+    res.status(204).json(response);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

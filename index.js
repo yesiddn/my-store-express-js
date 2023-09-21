@@ -1,7 +1,11 @@
 // Example: Hello, my server in express! (https://expressjs.com/en/starter/hello-world.html)
 const express = require('express');
 const routerApi = require('./routes');
-const {logErrors, errorHandler} = require('./middlewares/error.handler');
+const {
+  logErrors,
+  errorHandler,
+  boomErrorHandler,
+} = require('./middlewares/error.handler');
 
 const app = express();
 const port = 3000;
@@ -23,6 +27,7 @@ routerApi(app);
 // --- los middlewares de tipo error se deben poner despues de definir el rounting de la app
 // > tambien es importante el orden en el que se pongan, de esta forma se ejecutaran de forma secuencial uno tras otro
 app.use(logErrors);
+app.use(boomErrorHandler);
 app.use(errorHandler); // este middleware es el que se encarga de enviar la respuesta al cliente, por lo cual finaliza la ejecucion de la app
 // app.use(logErrors); // en caso de ponerlo en esta posicion, nunca se ejecutaria
 
