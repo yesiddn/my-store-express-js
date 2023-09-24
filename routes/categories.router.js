@@ -1,5 +1,12 @@
 const express = require('express');
 const CategoriesService = require('../services/categories.service');
+const validatorHandler = require('../middlewares/validator.handler'); // middleware que no se usa de forma global, solo en el router que lo necesita
+const {
+  createCategorySchema,
+  updateCategorySchema,
+  getCategorySchema,
+} = require('../schemas/categories.schema'); // cada endpoint tiene que definir su propio schema y de donde saca los datos
+const { tr, ne } = require('@faker-js/faker');
 
 const router = express.Router();
 const service = new CategoriesService();
@@ -19,77 +26,119 @@ router.get('/', (req, res) => {
   res.json(categories);
 });
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
+router.get(
+  '/:id',
+  validatorHandler(getCategorySchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
 
-  // if (id === '999') {
-  //   res.status(404).json({
-  //     message: 'Not found',
-  //   });
-  // } else {
-  //   res.json({
-  //     id,
-  //     name: 'Category 1',
-  //   });
-  // }
+      // if (id === '999') {
+      //   res.status(404).json({
+      //     message: 'Not found',
+      //   });
+      // } else {
+      //   res.json({
+      //     id,
+      //     name: 'Category 1',
+      //   });
+      // }
 
-  const category = service.findOne(id);
-  res.json(category);
-});
+      const category = service.findOne(id);
+      res.json(category);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
-router.post('/', (req, res) => {
-  const body = req.body;
+router.post(
+  '/',
+  validatorHandler(createCategorySchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const body = req.body;
 
-  const newCategory = service.create(body);
+      const newCategory = service.create(body);
 
-  // res.status(201).json({
-  //   message: 'Created',
-  //   data: body,
-  // });
-  res.status(201).json(newCategory);
-});
+      // res.status(201).json({
+      //   message: 'Created',
+      //   data: body,
+      // });
+      res.status(201).json(newCategory);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
-router.put('/:id', (req, res) => {
-  try {
-    const { id } = req.params;
-    const body = req.body;
+router.put(
+  '/:id',
+  validatorHandler(getCategorySchema, 'params'),
+  validatorHandler(updateCategorySchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const body = req.body;
 
-  const category = service.update(id, body);
+      const category = service.update(id, body);
 
-  // res.json({
-  //   message: 'Updated',
-  //   data: body,
-  //   id,
-  // });
-  res.json(category);
-  } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
-  }
-});
+      // res.json({
+      //   message: 'Updated',
+      //   data: body,
+      //   id,
+      // });
+      res.json(category);
+    } catch (error) {
+      // res.status(404).json({
+      //   message: error.message,
+      // });
+      next(error);
+    }
+  },
+);
 
-router.patch('/:id', (req, res) => {
-  const { id } = req.params;
-  const body = req.body;
+router.patch(
+  '/:id',
+  validatorHandler(getCategorySchema, 'params'),
+  validatorHandler(updateCategorySchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const body = req.body;
 
-  res.json({
-    message: 'Updated',
-    data: body,
-    id,
-  });
-});
+      const category = await service.update(id, body);
 
-router.delete('/:id', (req, res) => {
-  const { id } = req.params;
+      // res.json({
+      //   message: 'Updated',
+      //   data: body,
+      //   id,
+      // });
+      res.json(category);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
-  const response = service.delete(id);
-  
-  // res.json({
-  //   message: 'Deleted',
-  //   id,
-  // });
-  res.status(204).json(response);
-});
+router.delete(
+  '/:id',
+  validatorHandler(getCategorySchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+
+      const response = service.delete(id);
+
+      // res.json({
+      //   message: 'Deleted',
+      //   id,
+      // });
+      res.status(204).json(response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 module.exports = router;

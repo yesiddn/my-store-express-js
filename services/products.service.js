@@ -58,7 +58,7 @@ class ProductsService {
     return product;
   }
 
-  async update(id, { name, price, image }) {
+  async update(id, changes) {
     // update(id, data) {
     const index = this.products.findIndex((item) => item.id === id);
 
@@ -68,10 +68,8 @@ class ProductsService {
     }
 
     this.products[index] = {
-      id,
-      name,
-      price,
-      image,
+      ...this.products[index],
+      ...changes,
     };
 
     // patch method

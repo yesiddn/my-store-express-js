@@ -9,20 +9,20 @@ const price = Joi.number().min(1);
 const image = Joi.string().uri();
 
 // schema para la creacion de un producto
-const createProductSchema = Joi.object({
+const createCategorySchema = Joi.object({
   name: name.required(),
   price: price.required(),
   image: image.required(),
 });
 
-const updateProductSchema = Joi.object({
+const updateCategorySchema = Joi.object({
   name,
   price,
   image,
 }); // al crear el schema de los datos de esta forma, se puede reutilizar el codigo especificando si es o no requerido
 
-const getProductSchema = Joi.object({
+const getCategorySchema = Joi.object({
   id: id.required(),
-}); 
+});
 
-module.exports = { createProductSchema, updateProductSchema, getProductSchema };
+module.exports = { createCategorySchema, updateCategorySchema, getCategorySchema };
