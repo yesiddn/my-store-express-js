@@ -1,5 +1,6 @@
 // Example: Hello, my server in express! (https://expressjs.com/en/starter/hello-world.html)
 const express = require('express');
+const cors = require('cors');
 const routerApi = require('./routes');
 const {
   logErrors,
@@ -11,6 +12,23 @@ const app = express();
 const port = 3000;
 
 app.use(express.json()); // middleware para que express entienda el formato json en las peticiones
+
+const whitelist = [
+  'http://localhost:8080',
+  'https://myapp.com',
+  'http://127.0.0.1:5500',
+];
+const options = {
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido'));
+    }
+  }
+};
+// app.use(cors()); // middleware para habilitar el cors en la app, habilitando el acceso a la api desde cualquier origen
+app.use(cors(options)); 
 
 // ---
 
