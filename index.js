@@ -14,13 +14,13 @@ const port = 3000;
 app.use(express.json()); // middleware para que express entienda el formato json en las peticiones
 
 const whitelist = [
-  'http://localhost:8080',
-  'https://myapp.com',
   'http://127.0.0.1:5500',
+  'https://my-store-express-js.onrender.com/',
+  'https://my-store-express-js-production-ef4b.up.railway.app/',
 ];
 const options = {
   origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true);
     } else {
       callback(new Error('No permitido'));
