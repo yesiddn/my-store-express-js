@@ -4,7 +4,7 @@ const UsersService = require('../services/users.service');
 const router = express.Router();
 const service = new UsersService();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // const { limit, offset } = req.query;
 
   // if (limit && offset) {
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
   //   ]);
   // }
 
-  const users = service.find();
+  const users = await service.find();
   res.json(users);
 });
 
