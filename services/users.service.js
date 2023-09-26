@@ -1,6 +1,8 @@
 const { faker } = require('@faker-js/faker');
 // const getConetion = require('../libs/postgres');
 const pool = require('../libs/postgres.pool');
+const {models} = require('../libs/sequelize'); // cada vez que en sequelize llamamos al setupModels que ejecuta el .init, se exporta el objeto models (namespace o espacio de nombres reservados) que contiene todos los modelos que se han inicializado
+// En user.model.js en la configuracion se pone un atributo modelName, el cual es el nombre del modelo que se va a usar en el namespace models
 
 class UsersService {
   constructor() {
@@ -40,9 +42,12 @@ class UsersService {
 
     // return this.users;
 
-    const query = 'SELECT * FROM tasks';
-    const response = await this.pool.query(query);
-    return response.rows;
+    // const query = 'SELECT * FROM tasks';
+    // const response = await this.pool.query(query);
+    // return response.rows;
+
+    const respose = await models.User.findAll();
+    return respose;
   }
 
   findOne(id) {

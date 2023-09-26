@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const { config } = require('./../config/config');
+const setupModels = require('./../db/models');
 
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
@@ -15,5 +16,12 @@ const sequelize = new Sequelize(
     logging: console.log,
   }
 );
+
+// se inicializan los modelos
+setupModels(sequelize);
+
+// se hace la sincronizacion de los modelos con la base de datos, es decir, se crean las tablas en la base de datos
+sequelize.sync();
+
 
 module.exports = sequelize;
