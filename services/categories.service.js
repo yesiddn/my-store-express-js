@@ -1,6 +1,8 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
+const sequelize = require('../libs/sequelize');
+
 class CategoriesService {
   constructor() {
     // Guardado en memoria volatil
@@ -30,8 +32,16 @@ class CategoriesService {
     return newCategory;
   }
 
-  find() {
-    return this.categories;
+  async find() {
+    const query = 'SELECT * FROM tasks';
+
+    // la respuesta que da es un array de dos posiciones, la primera es la data que contiene la respuesta de la consulta y la segunda es la metadata la cual contiene informacion sobre la consulta
+    // const [data, metadata] = await sequelize.query(query); // Sequelize permite hacer consultas directas a la base de datos
+    // return {data, metadata};
+    
+    const [data] = await sequelize.query(query);
+    return data;
+    // return this.categories;
   }
 
   findOne(id) {

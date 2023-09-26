@@ -6,12 +6,11 @@ const {
   updateCategorySchema,
   getCategorySchema,
 } = require('../schemas/categories.schema'); // cada endpoint tiene que definir su propio schema y de donde saca los datos
-const { tr, ne } = require('@faker-js/faker');
 
 const router = express.Router();
 const service = new CategoriesService();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // res.json([
   //   {
   //     id: 1,
@@ -22,7 +21,7 @@ router.get('/', (req, res) => {
   //     name: 'Category 2',
   //   },
   // ]);
-  const categories = service.find();
+  const categories = await service.find();
   res.json(categories);
 });
 
