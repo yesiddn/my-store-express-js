@@ -1,7 +1,8 @@
 const { faker } = require('@faker-js/faker');
 // const getConetion = require('../libs/postgres');
+const boom = require('@hapi/boom');
 const pool = require('../libs/postgres.pool');
-const {models} = require('../libs/sequelize'); // cada vez que en sequelize llamamos al setupModels que ejecuta el .init, se exporta el objeto models (namespace o espacio de nombres reservados) que contiene todos los modelos que se han inicializado
+const { models } = require('../libs/sequelize'); // cada vez que en sequelize llamamos al setupModels que ejecuta el .init, se exporta el objeto models (namespace o espacio de nombres reservados) que contiene todos los modelos que se han inicializado
 // En user.model.js en la configuracion se pone un atributo modelName, el cual es el nombre del modelo que se va a usar en el namespace models
 
 class UsersService {
@@ -20,18 +21,19 @@ class UsersService {
       this.users.push({
         id: faker.string.uuid(),
         name: faker.person.fullName(),
-        job: faker.person.jobArea()
+        job: faker.person.jobArea(),
       });
     }
   }
 
   create(data) {
-    const newUser = {
-      id: faker.string.uuid(),
-      ...data,
-    };
+    // const newUser = {
+    //   id: faker.string.uuid(),
+    //   ...data,
+    // };
 
-    this.users.push(newUser);
+    // this.users.push(newUser);
+    const newUser = models.User.create(data);
     return newUser;
   }
 
@@ -50,33 +52,44 @@ class UsersService {
     return respose;
   }
 
-  findOne(id) {
-    return this.users.find((item) => item.id === id);
+  async findOne(id) {
+    // return this.users.find((item) => item.id === id);
+    const user = await models.User.findByPk(id); // findByPk es un metodo de sequelize que busca por primary key
+    if (!user) {
+      throw boom.notFound('User not found');
+    }
+    return user;
   }
 
-  update(id, { name, job }) {
-    const index = this.users.findIndex((item) => item.id === id);
+  async update(id, changes) {
+    // const index = this.users.findIndex((item) => item.id === id);
 
-    if (index === -1) {
-      throw new Error('Not found');
-    }
+    // if (index === -1) {
+    //   throw new Error('Not found');
+    // }
 
-    this.users[index] = {
-      id,
-      name,
-      job,
-    };
-    return this.users[index];
+    // this.users[index] = {
+    //   id,
+    //   name,
+    //   job,
+    // };
+    // return this.users[index];
+    const user = await this.findOne(id); // reutilizamos el metodo findOne para validar si el usuario existe
+    const response = await user.update(changes); // update es un metodo de sequelize que actualiza los cambios
+    return response;
   }
 
-  delete(id) {
-    const index = this.users.findIndex((item) => item.id === id);
+  async delete(id) {
+    // const index = this.users.findIndex((item) => item.id === id);
 
-    if (index === -1) {
-      throw new Error('Not found');
-    }
+    // if (index === -1) {
+    //   throw new Error('Not found');
+    // }
 
-    this.users.splice(index, 1);
+    // this.users.splice(index, 1);
+    // return { id, message: 'Deleted' };
+    const user = await this.findOne(id);
+    await user.destroy();
     return { id, message: 'Deleted' };
   }
 }
