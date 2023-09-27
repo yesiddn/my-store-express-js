@@ -37,7 +37,15 @@ function boomErrorHandler(err, req, res, next) {
 
 function queryErrorHandler(err, req, res, next) {
   if (err instanceof ValidationError) {
+    // error hanling with boom
     boomErrorHandler(boom.conflict(err.errors[0].message), req, res, next);
+
+    // error handling with express
+    // res.status(409).json({
+    //   statusCode: 409,
+    //   message: err.name,
+    //   errors: err.errors,
+    // });
   }
   next(err);
 }

@@ -46,7 +46,7 @@ routerApi(app);
 // --- los middlewares de tipo error se deben poner despues de definir el rounting de la app
 // > tambien es importante el orden en el que se pongan, de esta forma se ejecutaran de forma secuencial uno tras otro
 app.use(logErrors);
-app.use(handleSQLError);
+app.use(queryErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler); // este middleware es el que se encarga de enviar la respuesta al cliente, por lo cual finaliza la ejecucion de la app
 // app.use(logErrors); // en caso de ponerlo en esta posicion, nunca se ejecutaria

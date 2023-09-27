@@ -219,3 +219,4 @@ $RECYCLE.BIN/
 
 .vscode/
 postgres_data/
+mysql_data/
