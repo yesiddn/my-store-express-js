@@ -1,3 +1,5 @@
+const boom = require('@hapi/boom');
+const { ValidationError } = require('sequelize');
 // función que hos hara llegar a un middleware de tipo error
 function logErrors(err, req, res, next) {
   console.log('logErrors'); // para saber quien se esta ejecutando
@@ -33,4 +35,16 @@ function boomErrorHandler(err, req, res, next) {
   }
 }
 
-module.exports = { logErrors, errorHandler, boomErrorHandler };
+function queryErrorHandler(err, req, res, next) {
+  if (err instanceof ValidationError) {
+    boomErrorHandler(boom.conflict(err.errors[0].message), req, res, next);
+  }
+  next(err);
+}
+
+module.exports = {
+  logErrors,
+  errorHandler,
+  boomErrorHandler,
+  queryErrorHandler,
+};
