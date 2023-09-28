@@ -19,6 +19,11 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
+  role: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: 'costumer',
+  },
   createdAt: {
     // nombre del campo como se quiere manipular en JS
     allowNull: false,
