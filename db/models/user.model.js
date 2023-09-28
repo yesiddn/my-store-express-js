@@ -1,7 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
 // una buena practica es comenzar definiendo el nombre de la tabla
-const USER_TABLE = 'Users';
+const USER_TABLE = 'users';
 // schema que define la estructura de la base de datos. Diferente de los Schemas de Joi que definen la estructura de los datos que se reciben en el request
 const UserSchema = {
   id: {
@@ -22,7 +22,7 @@ const UserSchema = {
   role: {
     allowNull: false,
     type: DataTypes.STRING,
-    defaultValue: 'costumer',
+    defaultValue: 'customer',
   },
   createdAt: {
     // nombre del campo como se quiere manipular en JS
@@ -43,10 +43,10 @@ class User extends Model {
   static config(sequelize) {
     return {
       sequelize, // conexion a la base de datos
-      tablaName: USER_TABLE, // nombre de la tabla
+      tableName: 'users', // nombre de la tabla
       modelName: 'User', // nombre del modelo
       timestamps: false, // permite o no que se creen los campos createdAt y updatedAt
-    }
+    };
   }
 }
 
