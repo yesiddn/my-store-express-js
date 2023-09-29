@@ -1,3 +1,5 @@
+const { createUserSchema, updateUserSchema } = require('./users.schema');
+
 const Joi = require('joi');
 
 const id = Joi.number().integer();
@@ -6,7 +8,7 @@ const lastName = Joi.string();
 const phone = Joi.string()
   .length(10)
   .pattern(/^[0-9]+$/);
-const userId = Joi.number().integer();
+// const userId = Joi.number().integer();
 // const email = Joi.string().email();
 // const password = Joi.string();
 
@@ -18,18 +20,20 @@ const createCustomerSchema = Joi.object({
   name: name.required(),
   lastName: lastName.required(),
   phone: phone.required(),
-  userId: userId.required(),
+  // userId: userId.required(),
   // user: Joi.object({
   //   email: email.required(),
   //   password: password.required(),
   // }),
+  user: createUserSchema.required(),
 });
 
 const updateCustomerSchema = Joi.object({
   name,
   lastName,
   phone,
-  userId,
+  // userId,
+  user: updateUserSchema,
 });
 
 module.exports = {

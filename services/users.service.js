@@ -48,7 +48,9 @@ class UsersService {
     // const response = await this.pool.query(query);
     // return response.rows;
 
-    const respose = await models.User.findAll();
+    const respose = await models.User.findAll({
+      include: ['customer'],
+    });
     return respose;
   }
 

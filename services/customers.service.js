@@ -22,6 +22,15 @@ class CustomerService {
   }
 
   async create(data) {
+    // CREAR USUARIO Y CUSTOMER EN LA MISMA TRANSACCION
+    // Forma larga
+    // const newUser = await User.create(data);
+    // const newCustomer = await models.Customer.create({
+    //   ...data,
+    //   userId: newUser.id,
+    // });
+
+    // Forma "corta"
     const newCustomer = await models.Customer.create(data, {
       include: ['user'],
     });

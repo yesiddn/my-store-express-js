@@ -35,8 +35,8 @@ const UserSchema = {
 
 // esto permite usar metodos como create, findAll, findOne, etc. Este modelo tiene todos los metodos en que vamos a hacer queries a la base de datos
 class User extends Model {
-  static associate() {
-
+  static associate(models) {
+    this.hasOne(models.Customer, { as: 'customer', foreignKey: 'userId' });
   }
 
   // este metodo permite definir la configuracion del modelo y recibe como parametro la conexion a la base de datos. Retorna la configuracion del modelo

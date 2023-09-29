@@ -12,6 +12,7 @@ function setupModels(sequelize) {
   Customer.init(CustomerSchema, Customer.config(sequelize));
 
   // se llama la funcion associate de cada modelo para que se puedan asociar entre si
+  User.associate(sequelize.models);
   Customer.associate(sequelize.models);
 }
 
