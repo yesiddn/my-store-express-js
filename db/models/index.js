@@ -4,16 +4,22 @@
 // aqui se importan todos los modelos que se van a usar en la aplicacion
 const { User, UserSchema } = require('./user.model');
 const { Customer, CustomerSchema } = require('./customer.model');
+const { Category, CategorySchema } = require('./category.model');
+const { Product, ProductSchema } = require('./product.model');
 
 // funcion que tambien recibe la conexion a la base de datos
 function setupModels(sequelize) {
   // Se inicializa el modelo y se le pasa el schema y la configuracion
   User.init(UserSchema, User.config(sequelize));
   Customer.init(CustomerSchema, Customer.config(sequelize));
+  Category.init(CategorySchema, Category.config(sequelize));
+  Product.init(ProductSchema, Product.config(sequelize));
 
   // se llama la funcion associate de cada modelo para que se puedan asociar entre si
   User.associate(sequelize.models);
   Customer.associate(sequelize.models);
+  Category.associate(sequelize.models);
+  Product.associate(sequelize.models);
 }
 
 // se exporta la funcion

@@ -43,7 +43,7 @@ class User extends Model {
   static config(sequelize) {
     return {
       sequelize, // conexion a la base de datos
-      tableName: 'users', // nombre de la tabla
+      tableName: USER_TABLE, // nombre de la tabla
       modelName: 'User', // nombre del modelo
       timestamps: false, // permite o no que se creen los campos createdAt y updatedAt
     };
