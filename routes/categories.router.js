@@ -43,7 +43,7 @@ router.get(
       //   });
       // }
 
-      const category = service.findOne(id);
+      const category = await service.findOne(id);
       res.json(category);
     } catch (error) {
       next(error);
@@ -58,7 +58,7 @@ router.post(
     try {
       const body = req.body;
 
-      const newCategory = service.create(body);
+      const newCategory = await service.create(body);
 
       // res.status(201).json({
       //   message: 'Created',
@@ -80,7 +80,7 @@ router.put(
       const { id } = req.params;
       const body = req.body;
 
-      const category = service.update(id, body);
+      const category = await service.update(id, body);
 
       // res.json({
       //   message: 'Updated',
@@ -127,13 +127,13 @@ router.delete(
     try {
       const { id } = req.params;
 
-      const response = service.delete(id);
+      const response = await service.delete(id);
 
       // res.json({
       //   message: 'Deleted',
       //   id,
       // });
-      res.status(204).json(response);
+      res.status(202).json(response);
     } catch (error) {
       next(error);
     }

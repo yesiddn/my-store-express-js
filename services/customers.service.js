@@ -46,7 +46,7 @@ class CustomerService {
   async delete(id) {
     const model = await this.findOne(id);
     await model.destroy();
-    return { response: true };
+    return { message: 'Deleted' };
   }
 }
 

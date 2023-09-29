@@ -1,5 +1,5 @@
 const boom = require('@hapi/boom');
-const { ValidationError } = require('sequelize');
+const { ValidationError, ForeignKeyConstraintError } = require('sequelize');
 // función que hos hara llegar a un middleware de tipo error
 function logErrors(err, req, res, next) {
   console.log('logErrors'); // para saber quien se esta ejecutando
@@ -46,6 +46,8 @@ function queryErrorHandler(err, req, res, next) {
     //   message: err.name,
     //   errors: err.errors,
     // });
+  } else if (err instanceof ForeignKeyConstraintError) {
+    boomErrorHandler(boom.conflict(err.message), req, res, next);
   }
   next(err);
 }

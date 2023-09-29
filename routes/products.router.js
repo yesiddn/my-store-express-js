@@ -162,7 +162,7 @@ router.delete(
       //   message: 'Deleted',
       //   id
       // });
-      res.status(204).json(response);
+      res.status(202).json(response);
     } catch (error) {
       next(error);
     }
