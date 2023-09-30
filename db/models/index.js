@@ -7,6 +7,7 @@ const { Customer, CustomerSchema } = require('./customer.model');
 const { Category, CategorySchema } = require('./category.model');
 const { Product, ProductSchema } = require('./product.model');
 const { Order, OrderSchema } = require('./order.model');
+const { OrderProduct, OrderProductSchema } = require('./order-product.model');
 
 // funcion que tambien recibe la conexion a la base de datos
 function setupModels(sequelize) {
@@ -16,6 +17,7 @@ function setupModels(sequelize) {
   Category.init(CategorySchema, Category.config(sequelize));
   Product.init(ProductSchema, Product.config(sequelize));
   Order.init(OrderSchema, Order.config(sequelize));
+  OrderProduct.init(OrderProductSchema, OrderProduct.config(sequelize));
 
   // se llama la funcion associate de cada modelo para que se puedan asociar entre si
   User.associate(sequelize.models);
