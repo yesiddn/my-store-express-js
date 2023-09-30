@@ -6,6 +6,7 @@ const {
   createProductSchema,
   updateProductSchema,
   getProductSchema,
+  queryProductSchema,
 } = require('../schemas/products.schema'); // cada endpoint tiene que definir su propio schema y de donde saca los datos
 
 const router = express.Router();
@@ -29,11 +30,13 @@ const service = new ProductsService();
 // }
 
 // app.get('/products', (req, res) => { //> para separar responsabilidades, el router no se manejaria con '/products' sino con '/' dejando solo la especificidad
-router.get('/', async (req, res) => {
+router.get('/',
+  validatorHandler(queryProductSchema, 'query'),
+  async (req, res) => {
   // Los query params son opcionales, se pueden eviar asi: /products?size=10
   // const { size } = req.query;
   // const products = getProducts(size);
-  const products = await service.find();
+  const products = await service.find(req.query);
   res.json(products);
 });
 

@@ -40,7 +40,7 @@ class ProductsService {
     return newProduct;
   }
 
-  async find() {
+  async find(query) {
     // return this.products;
 
     // emulacion de demora
@@ -55,10 +55,17 @@ class ProductsService {
     // const response = await this.pool.query(query);
     // return response.rows;
 
-    // consulta usando sequelize
-    const products = await models.Product.findAll({
+    const options = {
       include: ['category'],
-    });
+    };
+    const { limit, offset } = query;
+    if (limit && offset) {
+      options.limit = limit;
+      options.offset = offset;
+    }
+
+    // consulta usando sequelize
+    const products = await models.Product.findAll(options);
     return products;
   }
 
