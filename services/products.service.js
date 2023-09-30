@@ -1,5 +1,6 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
+const { Op } = require('sequelize'); // operadores de sequelize para hacer consultas mas complejas
 
 // const pool = require('../libs/postgres.pool');
 const { models } = require('../libs/sequelize');
@@ -57,11 +58,24 @@ class ProductsService {
 
     const options = {
       include: ['category'],
+      where: {},
     };
-    const { limit, offset } = query;
+    const { limit, offset, price, price_min, price_max } = query;
     if (limit && offset) {
       options.limit = limit;
       options.offset = offset;
+    }
+    if (price) {
+      options.where.price = price;
+    } else if (price_min && price_max) {
+      options.where.price = {
+        // validacion de ambos valores
+        // [Op.gte]: price_min, // gte = greater than or equal
+        // [Op.lte]: price_max, // lte = less than or equal
+
+        // valida que el valor este entre los dos valores
+        [Op.between]: [price_min, price_max] // forma mas usada
+      };
     }
 
     // consulta usando sequelize

@@ -15,12 +15,20 @@ module.exports = {
     await queryInterface.changeColumn(ORDER_PRODUCT_TABLE, 'order_id', {
       allowNull: false,
       type: DataTypes.INTEGER,
+      references: {
+        model: ORDER_PRODUCT_TABLE,
+        key: 'id',
+      },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
     await queryInterface.changeColumn(ORDER_PRODUCT_TABLE, 'product_id', {
       allowNull: false,
       type: DataTypes.INTEGER,
+      references: {
+        model: ORDER_PRODUCT_TABLE,
+        key: 'id',
+      },
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE',
     });
