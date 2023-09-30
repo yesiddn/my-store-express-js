@@ -28,6 +28,20 @@ const OrderSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW,
   },
+  total: {
+    type: DataTypes.VIRTUAL,
+    // este tipo de dato no es recomendable de usar cuando se tienen mas de 50 registros ya que es mejor hacer la consulta a la base de datos
+    get() {
+      if (this.items.length > 0) {
+        // items es el nombre de la relacion
+        return this.items.reduce(
+          (total, item) => total + item.price * item.OrderProduct.amount,
+          0,
+        );
+      }
+      return 0;
+    },
+  },
 };
 
 class Order extends Model {

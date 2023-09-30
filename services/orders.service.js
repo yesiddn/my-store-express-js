@@ -11,7 +11,16 @@ class OrderService {
   }
 
   async find() {
-    return [];
+    const orders = await models.Order.findAll({
+      include: [
+        {
+          association: 'customer',
+          include: ['user'],
+        },
+        'items'
+      ],
+    });
+    return orders;
   }
 
   async findOne(id) {
@@ -21,6 +30,7 @@ class OrderService {
           association: 'customer',
           include: ['user'],
         },
+        'items'
       ],
     });
 
@@ -40,6 +50,11 @@ class OrderService {
 
   async delete(id) {
     return { id };
+  }
+
+  async addItem(data) {
+    const newItem = await models.OrderProduct.create(data);
+    return newItem;
   }
 }
 
