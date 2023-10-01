@@ -1,4 +1,4 @@
-const { faker } = require('@faker-js/faker');
+// const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
 // const sequelize = require('../libs/sequelize');
@@ -11,17 +11,17 @@ class CategoriesService {
     this.generate();
   }
 
-  generate() {
-    const limit = 5;
+  // generate() {
+  //   const limit = 5;
 
-    for (let i = 0; i < limit; i++) {
-      this.categories.push({
-        id: faker.string.uuid(),
-        name: faker.commerce.department(),
-        image: faker.image.url(),
-      });
-    }
-  }
+  //   for (let i = 0; i < limit; i++) {
+  //     this.categories.push({
+  //       id: faker.string.uuid(),
+  //       name: faker.commerce.department(),
+  //       image: faker.image.url(),
+  //     });
+  //   }
+  // }
 
   async create(data) {
     // const newCategory = {

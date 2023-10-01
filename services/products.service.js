@@ -1,4 +1,4 @@
-const { faker } = require('@faker-js/faker');
+// const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 const { Op } = require('sequelize'); // operadores de sequelize para hacer consultas mas complejas
 
@@ -14,19 +14,19 @@ class ProductsService {
     // this.pool.on('error', (err) => console.error(err));
   }
 
-  generate() {
-    const limit = 100;
+  // generate() {
+  //   const limit = 100;
 
-    for (let i = 0; i < limit; i++) {
-      this.products.push({
-        id: faker.string.uuid(),
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.url(),
-        isBlock: faker.datatype.boolean(),
-      });
-    }
-  }
+  //   for (let i = 0; i < limit; i++) {
+  //     this.products.push({
+  //       id: faker.string.uuid(),
+  //       name: faker.commerce.productName(),
+  //       price: parseInt(faker.commerce.price(), 10),
+  //       image: faker.image.url(),
+  //       isBlock: faker.datatype.boolean(),
+  //     });
+  //   }
+  // }
 
   async create(data) {
     // const newProduct = {

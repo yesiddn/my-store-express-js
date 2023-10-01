@@ -1,4 +1,4 @@
-const { faker } = require('@faker-js/faker');
+// const { faker } = require('@faker-js/faker');
 // const getConetion = require('../libs/postgres');
 const boom = require('@hapi/boom');
 const pool = require('../libs/postgres.pool');
