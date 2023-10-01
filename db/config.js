@@ -9,10 +9,12 @@ module.exports = {
   // ambientes
   development: {
     url: URI,
+    // url: config.dbUrl,
     dialect: 'postgres',
   },
   production: {
-    url: URI,
+    // url: URI,
+    url: config.dbUrl,
     dialect: 'postgres',
   }
   
