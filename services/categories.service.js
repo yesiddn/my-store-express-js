@@ -7,8 +7,8 @@ const { models } = require('../libs/sequelize');
 class CategoriesService {
   constructor() {
     // Guardado en memoria volatil
-    this.categories = [];
-    this.generate();
+    // this.categories = [];
+    // this.generate();
   }
 
   // generate() {

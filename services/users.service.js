@@ -1,30 +1,30 @@
 // const { faker } = require('@faker-js/faker');
 // const getConetion = require('../libs/postgres');
 const boom = require('@hapi/boom');
-const pool = require('../libs/postgres.pool');
+// const pool = require('../libs/postgres.pool');
 const { models } = require('../libs/sequelize'); // cada vez que en sequelize llamamos al setupModels que ejecuta el .init, se exporta el objeto models (namespace o espacio de nombres reservados) que contiene todos los modelos que se han inicializado
 // En user.model.js en la configuracion se pone un atributo modelName, el cual es el nombre del modelo que se va a usar en el namespace models
 
 class UsersService {
   constructor() {
     // Guardado en memoria volatil
-    this.users = [];
-    this.generate();
-    this.pool = pool;
-    this.pool.on('error', (err) => console.error(err));
+    // this.users = [];
+    // this.generate();
+    // this.pool = pool;
+    // this.pool.on('error', (err) => console.error(err));
   }
 
-  generate() {
-    const limit = 25;
+  // generate() {
+  //   const limit = 25;
 
-    for (let i = 0; i < limit; i++) {
-      this.users.push({
-        id: faker.string.uuid(),
-        name: faker.person.fullName(),
-        job: faker.person.jobArea(),
-      });
-    }
-  }
+  //   for (let i = 0; i < limit; i++) {
+  //     this.users.push({
+  //       id: faker.string.uuid(),
+  //       name: faker.person.fullName(),
+  //       job: faker.person.jobArea(),
+  //     });
+  //   }
+  // }
 
   create(data) {
     // const newUser = {
