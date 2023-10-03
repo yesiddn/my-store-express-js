@@ -2,6 +2,10 @@
 const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
+
+// middleware para validar el api key
+const { checkApiKey } = require('./middlewares/auth.handler');
+
 const {
   logErrors,
   errorHandler,
@@ -26,10 +30,10 @@ const options = {
     } else {
       callback(new Error('No permitido'));
     }
-  }
+  },
 };
 // app.use(cors()); // middleware para habilitar el cors en la app, habilitando el acceso a la api desde cualquier origen
-app.use(cors(options)); 
+app.use(cors(options));
 
 // ---
 
@@ -37,7 +41,7 @@ app.get('/', (req, res) => {
   res.send('Hello, my server in express!');
 });
 
-app.get('/new-endpoint', (req, res) => {
+app.get('/new-endpoint', checkApiKey, (req, res) => {
   res.send('Hello, this is a new endpoint!');
 });
 
