@@ -4,6 +4,7 @@ const boom = require('@hapi/boom');
 // const pool = require('../libs/postgres.pool');
 const { models } = require('../libs/sequelize'); // cada vez que en sequelize llamamos al setupModels que ejecuta el .init, se exporta el objeto models (namespace o espacio de nombres reservados) que contiene todos los modelos que se han inicializado
 // En user.model.js en la configuracion se pone un atributo modelName, el cual es el nombre del modelo que se va a usar en el namespace models
+const bcrypt = require('bcrypt');
 
 class UsersService {
   constructor() {
@@ -26,14 +27,20 @@ class UsersService {
   //   }
   // }
 
-  create(data) {
+  async create(data) {
     // const newUser = {
     //   id: faker.string.uuid(),
     //   ...data,
     // };
 
     // this.users.push(newUser);
-    const newUser = models.User.create(data);
+    const hash = await bcrypt.hash(data.password, 10);
+    const newUser = await models.User.create({ ...data, password: hash });
+
+    // retorna el usuario junto a su contraseña encriptada
+    // delete newUser.password; // opcion para eliminar la contraseña del objeto con javascript
+
+    delete newUser.dataValues.password; // opcion para eliminar la contraseña del objeto con sequelize
     return newUser;
   }
 
