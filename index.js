@@ -35,6 +35,9 @@ const options = {
 // app.use(cors()); // middleware para habilitar el cors en la app, habilitando el acceso a la api desde cualquier origen
 app.use(cors(options));
 
+// --- middleware para loggear las peticiones
+require('./utils/auth');
+
 // ---
 
 app.get('/', (req, res) => {

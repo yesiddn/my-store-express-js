@@ -61,6 +61,13 @@ class UsersService {
     return respose;
   }
 
+  async findByEmail(email) {
+    const response = await models.User.findOne({
+      where: { email },
+    })
+    return response;
+  }
+
   async findOne(id) {
     // return this.users.find((item) => item.id === id);
     const user = await models.User.findByPk(id); // findByPk es un metodo de sequelize que busca por primary key
