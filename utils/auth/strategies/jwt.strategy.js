@@ -7,7 +7,7 @@ const options = {
   secretOrKey: config.jwtSecret, // La clave secreta para validar el token
 }
 
-const JwtStrategy = new Strategy(options, async (payload, done) => {
+const JwtStrategy = new Strategy(options, (payload, done) => {
   return done(null, payload);
 });
 
