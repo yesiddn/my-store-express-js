@@ -8,4 +8,8 @@ const loginAuthSchema = Joi.object({
   password: password.required(),
 });
 
-module.exports = { loginAuthSchema };
+const recoveryAuthSchema = Joi.object({
+  email: email.required(),
+});
+
+module.exports = { loginAuthSchema, recoveryAuthSchema };
