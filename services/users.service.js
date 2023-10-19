@@ -74,6 +74,7 @@ class UsersService {
     if (!user) {
       throw boom.notFound('User not found');
     }
+    
     return user;
   }
 

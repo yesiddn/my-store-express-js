@@ -22,6 +22,7 @@ class AuthService {
     }
 
     delete user.dataValues.password;
+    delete user.dataValues.recoveryToken;
     return user;
   }
 
@@ -41,6 +42,10 @@ class AuthService {
       throw boom.unauthorized('User not found');
     }
 
+    jwt.verify(user.recoveryToken, config.jwtSecret, (err) => {
+      if (!err) throw boom.badRequest('You already have a active token.');
+    });
+
     const payload = { sub: user.id };
     const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '15m' }); // se puede generar otra clave para el token
     const link = `http://localhost:3000/recovery?token=${token}`;
@@ -57,6 +62,26 @@ class AuthService {
 
     const response = await this.sendMail(mail);
     return response;
+  }
+
+  async changePassword(token, newPassword) {
+    try {
+      const payload = jwt.verify(token, config.jwtSecret);
+
+      const user = await service.findOne(payload.sub);
+
+      if (user.recoveryToken !== token) {
+        throw boom.unauthorized('Invalid token');
+      }
+
+      const hash = await bcrypt.hash(newPassword, 10);
+
+      await service.update(user.id, { password: hash, recoveryToken: null });
+
+      return { message: 'Password changed' };
+    } catch (error) {
+      throw boom.unauthorized('Invalid token');
+    }
   }
 
   async sendMail(infoMail) {

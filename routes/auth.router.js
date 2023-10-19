@@ -4,6 +4,7 @@ const passport = require('passport');
 const {
   loginAuthSchema,
   recoveryAuthSchema,
+  changePasswordAuthSchema
 } = require('../schemas/auth.schema');
 const validatorHandler = require('../middlewares/validator.handler');
 // const jwt = require('jsonwebtoken');
@@ -48,6 +49,20 @@ router.post(
     try {
       const { email } = req.body;
       const response = await service.sendRecoveryLink(email);
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+router.post(
+  '/change-password',
+  validatorHandler(changePasswordAuthSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { token, newPassword } = req.body;
+      const response = await service.changePassword(token, newPassword);
       res.json(response);
     } catch (error) {
       next(error);
