@@ -32,7 +32,7 @@ const OrderSchema = {
     type: DataTypes.VIRTUAL,
     // este tipo de dato no es recomendable de usar cuando se tienen mas de 50 registros ya que es mejor hacer la consulta a la base de datos
     get() {
-      if (this.items.length > 0) {
+      if (this.items && this.items.length > 0) {
         // items es el nombre de la relacion
         return this.items.reduce(
           (total, item) => total + item.price * item.OrderProduct.amount,

@@ -10,6 +10,26 @@ class OrderService {
     return newOrder;
   }
 
+  async createByUserId(userId) {
+    const customer = await models.Customer.findOne({
+      where: {
+        '$user.id$': userId,
+      },
+      include: ['user']
+    });
+
+    if (!customer) {
+      throw boom.notFound('Customer not found');
+    }
+
+    const data = {
+      customerId: customer.id,
+    }
+    
+    const newOrder = await models.Order.create(data);
+    return newOrder;
+  }
+
   async find() {
     const orders = await models.Order.findAll({
       include: [
@@ -18,6 +38,21 @@ class OrderService {
           include: ['user'],
         },
         'items'
+      ],
+    });
+    return orders;
+  }
+
+  async findByUser(userId) {
+    const orders = await models.Order.findAll({
+      where: {
+        '$customer.user.id$': userId, // el $ es para indicar que es una propiedad de una relacion 
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user'],
+        },
       ],
     });
     return orders;

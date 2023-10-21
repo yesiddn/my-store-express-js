@@ -1,11 +1,13 @@
 const express = require('express');
 const CategoriesService = require('../services/categories.service');
 const validatorHandler = require('../middlewares/validator.handler'); // middleware que no se usa de forma global, solo en el router que lo necesita
+const { checkRoles } = require('../middlewares/auth.handler');
 const {
   createCategorySchema,
   updateCategorySchema,
   getCategorySchema,
 } = require('../schemas/categories.schema'); // cada endpoint tiene que definir su propio schema y de donde saca los datos
+const passport = require('passport');
 
 const router = express.Router();
 const service = new CategoriesService();
@@ -53,6 +55,8 @@ router.get(
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }), // tipo de autenticacion, en este caso jwt, y no se va a guardar en session
+  checkRoles('admin'),
   validatorHandler(createCategorySchema, 'body'),
   async (req, res, next) => {
     try {
@@ -73,6 +77,8 @@ router.post(
 
 router.put(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(['admin']),
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
   async (req, res, next) => {
@@ -99,6 +105,8 @@ router.put(
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(['admin']),
   validatorHandler(getCategorySchema, 'params'),
   validatorHandler(updateCategorySchema, 'body'),
   async (req, res, next) => {
@@ -122,6 +130,8 @@ router.patch(
 
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles(['admin']),
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
     try {

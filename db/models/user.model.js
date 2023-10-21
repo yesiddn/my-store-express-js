@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
+// const bcrypt = require('bcrypt');
 
 // una buena practica es comenzar definiendo el nombre de la tabla
 const USER_TABLE = 'users';
@@ -17,6 +18,11 @@ const UserSchema = {
   },
   password: {
     allowNull: false,
+    type: DataTypes.STRING,
+  },
+  recoveryToken: {
+    field: 'recovery_token',
+    allowNull: true,
     type: DataTypes.STRING,
   },
   role: {
@@ -46,6 +52,12 @@ class User extends Model {
       tableName: USER_TABLE, // nombre de la tabla
       modelName: 'User', // nombre del modelo
       timestamps: false, // permite o no que se creen los campos createdAt y updatedAt
+      // hooks: {
+      //   beforeCreate: async (user, options) => {
+      //     const password = await bcrypt.hash(user.password, 10);
+      //     user.password = password;
+      //   }, // encrypta la contraseña antes de crear el usuario
+      // }, // permite definir hooks que se ejecutan antes o despues de una accion
     };
   }
 }
